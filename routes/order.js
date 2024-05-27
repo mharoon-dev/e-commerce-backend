@@ -1,6 +1,13 @@
 import express from "express";
 import { verifyTokenAndAdmin } from "../routes/verifyToken.js";
-import { createOrder, deleteOrder, getAllOrder, getMonthlyIncome, getOrder, updateOrder } from "../controllers/order.js";
+import {
+  createOrder,
+  deleteOrder,
+  getAllOrder,
+  getMonthlyIncome,
+  getOrder,
+  updateOrder,
+} from "../controllers/order.js";
 export const orderRouter = express.Router();
 
 // create
@@ -32,5 +39,3 @@ orderRouter.get("/", verifyTokenAndAdmin, getAllOrder);
 // http://localhost:5000/api/orders/income
 // get
 orderRouter.get("/income", verifyTokenAndAdmin, getMonthlyIncome);
-
-

@@ -1,5 +1,5 @@
 import express from "express";
-// import cors from "cors";
+import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./config/default.js";
 import { userRouter } from "./routes/user.js";
@@ -7,16 +7,18 @@ import { authRouter } from "./routes/auth.js";
 import { productRouter } from "./routes/product.js";
 import { cartRouter } from "./routes/cart.js";
 import { orderRouter } from "./routes/order.js";
+import { stripeRouter } from "./routes/stripe.js";
 
 // const PORT = 5000;
 
 const app = express();
 
 dotenv.config();
-// app.use(cors({
-//     origin: '*'
-// }));
 app.use(express.json());
+app.use(cors({
+  origin: 'http://localhost:5173', // replace with your frontend URL
+  credentials: true
+}));
 
 connectDB();
 
@@ -25,6 +27,7 @@ app.use("/api/users", userRouter);
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/orders", orderRouter);
+app.use("/api/checkout", stripeRouter);
 
 // const limiter = rateLimit({
 //     windowMs: 1 * 60 * 1000, // 15 minutes
