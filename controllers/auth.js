@@ -26,17 +26,19 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const user = await User.findOne({ username: req.body.username });
-    !user && res.status(401).json("Wrong username!");
+    if (!user) {
+      return res.status(401).json("Wrong username!");
+    }
 
     const hashedPassword = CryptoJS.AES.decrypt(
       user.password,
       process.env.PASS_SEC
     );
-
     const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
 
-    originalPassword !== req.body.password &&
-      res.status(401).json("Wrong password!");
+    if (originalPassword !== req.body.password) {
+      return res.status(401).json("Wrong password!");
+    }
 
     const accessToken = jwt.sign(
       {
@@ -48,8 +50,8 @@ export const login = async (req, res) => {
     );
     const { password, ...others } = user._doc;
 
-    res.status(200).json({ ...others, accessToken });
+    return res.status(200).json({ ...others, accessToken });
   } catch (err) {
-    res.status(500).json(err);
+    return res.status(500).json(err);
   }
 };
