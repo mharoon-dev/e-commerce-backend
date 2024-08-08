@@ -4,6 +4,18 @@ import CryptoJS from "crypto-js";
 import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
+  // email is already exist
+  const user = await User.findOne({ email: req.body.email });
+  if (user) {
+    return res.status(409).json("Email already exists!");
+  }
+
+  // userName is already exist
+  const userName = await User.findOne({ username: req.body.username });
+  if (userName) {
+    return res.status(409).json("User name already exists!");
+  }
+
   const newUser = new User({
     username: req.body.username,
     email: req.body.email,
@@ -54,4 +66,28 @@ export const login = async (req, res) => {
   } catch (err) {
     return res.status(500).json(err);
   }
+};
+
+export const isUserLoggedIn = async (req, res) => {
+  try {
+    const userData = req.user;
+    if (userData) {
+      console.log(userData, "====>> userData");
+      return res.status(200).json({
+        status: true,
+        message: "User is logged in",
+        data: userData,
+      });
+    } else {
+      console.log("User is not logged in");
+    }
+  } catch (error) {
+    return res
+      .status(500) //INTERNALERROR
+      .send(error.message);
+  }
+};
+
+export const googleAuth = (req, res) => {
+  res.send("googleAuth");
 };
