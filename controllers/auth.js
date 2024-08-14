@@ -16,9 +16,19 @@ export const register = async (req, res) => {
     return res.status(409).json("User name already exists!");
   }
 
+  // check byRefrence
+  const byRefrence = await User.findOne({
+    refrenceCode: req?.body?.byRefrence,
+  });
+  if (!byRefrence) {
+    return res.status(409).json("Refrence code does not exists!");
+  }
+
   const newUser = new User({
     username: req.body.username,
     email: req.body.email,
+    refrenceCode: req?.body?.refrenceCode ? req?.body?.refrenceCode : "",
+    byRefrence: req?.body?.byRefrence ? req?.body?.byRefrence : "",
     password: CryptoJS.AES.encrypt(
       req.body.password,
       process.env.PASS_SEC
@@ -28,6 +38,19 @@ export const register = async (req, res) => {
   try {
     const savedUser = await newUser.save();
     console.log(savedUser);
+
+    // add this user in refrence code user's array
+    if (req?.body?.byRefrence) {
+      const updateUser = await User.findOneAndUpdate(
+        {
+          refrenceCode: req?.body?.byRefrence,
+        },
+        {
+          $push: { refrenceUsers: savedUser._id },
+        },
+        { new: true }
+      );
+    }
     res.status(200).json(savedUser);
   } catch (err) {
     res.status(500).json(err);

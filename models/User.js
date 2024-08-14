@@ -16,10 +16,21 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    refrenceCode: {
+      type: String,
+      unique: true,
+    },
+    byRefrence: {
+      type: String,
+    },
     isAdmin: {
       type: Boolean,
       default: false,
     },
+    refrenceUsers: {
+      type: Array,
+    },
+
     img: {
       type: String,
     },
