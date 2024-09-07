@@ -2,13 +2,21 @@ import Order from "../models/Order.js";
 
 // create
 export const createOrder = async (req, res) => {
-  const newOrder = new Order(req.body);
+  console.log(req.body);
+  const { userId, products, amount, address, phoneNumber } = req.body;
+  if (!userId || !products || !amount || !address || !phoneNumber) {
+    return res.status(400).json({ message: "All fields are required" });
+  } else if (products.length === 0) {
+    return res.status(400).json({ message: "Cart is empty" });
+  } else {
+    const newOrder = new Order(req.body);
 
-  try {
-    const savedOrder = await newOrder.save();
-    res.status(200).json(savedOrder);
-  } catch (error) {
-    res.status(500).json(error);
+    try {
+      const savedOrder = await newOrder.save();
+      res.status(200).json(savedOrder);
+    } catch (error) {
+      res.status(500).json(error);
+    }
   }
 };
 

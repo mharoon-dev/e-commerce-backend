@@ -4,7 +4,8 @@ export const usersRoutes = express.Router();
 
 // create
 export const createCategory = async (req, res) => {
-  if (!req.body) {
+  const { name, img } = req.body;
+  if (!name || !img) {
     res.status(400).send({ message: "Content can not be empty!" });
     return;
   }

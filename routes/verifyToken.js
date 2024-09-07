@@ -1,15 +1,21 @@
 import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
-function verifyToken(req, res, next) {
+async function verifyToken(req, res, next) {
   const authHeader = req?.headers?.authorization;
-  // console.log(authHeader + "===>>authHeader");
   if (authHeader) {
     const token = authHeader.split(" ")[1];
-    jwt.verify(token, process.env.JWT_SEC, (err, user) => {
+    jwt.verify(token, process.env.JWT_SEC, async (err, user) => {
       if (err) {
         return res.status(403).json("Token is not valid!");
       }
-      req.user = user;
+
+      const verifiedUser = await User.findById(user.id);
+      if (!verifiedUser) {
+        return res.status(404).json("User not found!");
+      }
+
+      req.user = verifiedUser;
       next();
     });
   } else {
@@ -36,6 +42,5 @@ function verifyTokenAndAdmin(req, res, next) {
     }
   });
 }
-
 
 export { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin };

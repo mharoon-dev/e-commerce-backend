@@ -12,7 +12,7 @@ import {
 // create
 // http://localhost:5000/api/products
 // post
-productRouter.post("/", verifyTokenAndAdmin, createProduct);
+productRouter.post("/", createProduct);
 
 // update
 // http://localhost:5000/api/products/:id
@@ -31,5 +31,5 @@ productRouter.get("/find/:id", getProduct);
 
 // get all
 // http://localhost:5000/api/products
-// get 
+// get
 productRouter.get("/", getAllProducts);

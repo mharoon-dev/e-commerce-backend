@@ -28,7 +28,7 @@ orderRouter.delete("/:id", verifyTokenAndAdmin, deleteOrder);
 // get user orders
 // http:localhost:5000/api/orders/find/:userId
 // get
-orderRouter.get("/find/:userId", verifyTokenAndAdmin, getOrder);
+orderRouter.get("/find/:userId", getOrder);
 
 // get all orders
 // http://localhost:5000/api/orders
@@ -38,4 +38,4 @@ orderRouter.get("/", verifyTokenAndAdmin, getAllOrder);
 // get monthly income
 // http://localhost:5000/api/orders/income
 // get
-orderRouter.get("/income", verifyTokenAndAdmin, getMonthlyIncome);
+orderRouter.get("/income",  getMonthlyIncome);

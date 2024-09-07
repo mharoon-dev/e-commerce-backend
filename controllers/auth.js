@@ -29,6 +29,8 @@ export const register = async (req, res) => {
     email: req.body.email,
     refrenceCode: req?.body?.refrenceCode ? req?.body?.refrenceCode : "",
     byRefrence: req?.body?.byRefrence ? req?.body?.byRefrence : "",
+    isAdmin: req.body.isAdmin ? req.body.isAdmin : false,
+    img: req.body.img ? req.body.img : "",
     password: CryptoJS.AES.encrypt(
       req.body.password,
       process.env.PASS_SEC

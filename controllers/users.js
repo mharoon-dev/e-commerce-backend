@@ -2,6 +2,7 @@ import User from "../models/User.js";
 
 // UPDATE
 export const updateUser = async (req, res) => {
+  console.log(req.body);
   if (req.body.password) {
     req.body.password = CryptoJS.AES.encrypt(
       req.body.password,
