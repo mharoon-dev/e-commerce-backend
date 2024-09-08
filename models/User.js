@@ -30,7 +30,14 @@ const UserSchema = new mongoose.Schema(
     refrenceUsers: {
       type: Array,
     },
-
+    phoneNumber: {
+      type: Number,
+      unique: true,
+    },
+    bonus: {
+      type: Number,
+      default: 0,
+    },
     img: {
       type: String,
     },

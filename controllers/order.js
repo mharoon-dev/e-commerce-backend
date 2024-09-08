@@ -1,4 +1,5 @@
 import Order from "../models/Order.js";
+import User from "../models/User.js";
 
 // create
 export const createOrder = async (req, res) => {
@@ -12,10 +13,36 @@ export const createOrder = async (req, res) => {
     const newOrder = new Order(req.body);
 
     try {
+      const bonusAmount = (amount / 100) * 10;
+      console.log("Calculated bonus:", bonusAmount);
       const savedOrder = await newOrder.save();
+
+      // update the bonus of the byRefrenceCodeUser
+      const findUser = await User.findById(userId);
+
+      console.log(findUser);
+      console.log("user jis ne order kia hai upar hai");
+
+      if (findUser && findUser?.byRefrence) {
+        const updateUserBouns = await User.findOne({
+          refrenceCode: findUser?.byRefrence,
+        });
+
+        if (updateUserBouns) {
+          updateUserBouns.bonus += bonusAmount;
+          await updateUserBouns.save();
+          console.log("Bonus updated successfully:", updateUserBouns);
+        } else {
+          console.log("No user found with the given reference code");
+        }
+      } else {
+        console.log("User does not have a reference code");
+      }
+
       res.status(200).json(savedOrder);
     } catch (error) {
-      res.status(500).json(error);
+      console.error("Error in the order creation flow:", error);
+      res.status(500).json({ message: "An error occurred", error });
     }
   }
 };
