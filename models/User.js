@@ -18,7 +18,7 @@ const UserSchema = new mongoose.Schema(
     },
     refrenceCode: {
       type: String,
-      unique: true,
+      // unique: true,
     },
     byRefrence: {
       type: String,
@@ -40,6 +40,10 @@ const UserSchema = new mongoose.Schema(
     },
     img: {
       type: String,
+    },
+    winDrawReq: {
+      type: Boolean,
+      default: false,
     },
   },
   {

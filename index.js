@@ -9,6 +9,7 @@ import { categoryRouter } from "./routes/category.js";
 import { cartRouter } from "./routes/cart.js";
 import { orderRouter } from "./routes/order.js";
 import { stripeRouter } from "./routes/stripe.js";
+import { winDrawRouter } from "./routes/windraw.js";
 
 // const PORT = 5000;
 
@@ -18,7 +19,7 @@ dotenv.config();
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173", // replace with your frontend URL
+    origin: ["http://localhost:5173", "http://localhost:5174"], // replace with your frontend URL
     credentials: true,
   })
 );
@@ -32,6 +33,7 @@ app.use("/api/categories", categoryRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/checkout", stripeRouter);
+app.use("/api/windraw", winDrawRouter);
 
 // const limiter = rateLimit({
 //     windowMs: 1 * 60 * 1000, // 15 minutes
