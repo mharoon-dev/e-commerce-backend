@@ -87,6 +87,8 @@ export const getOrder = async (req, res) => {
 export const getAllOrder = async (req, res) => {
   try {
     const orders = await Order.find();
+    // send the orders in reverse chronological order
+    orders.reverse();
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json(error);

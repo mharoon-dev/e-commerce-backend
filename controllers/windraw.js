@@ -9,7 +9,7 @@ export const reqWindrw = async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    const newWinDraw = new WinDraw({ userDetails, amount });
+    const newWinDraw = new WinDraw({ userDetails, amount, status: "pending" });
     await newWinDraw.save();
 
     // update the user rewindraw property
@@ -47,6 +47,15 @@ export const updateWindrw = async (req, res) => {
     );
 
     res.status(200).json(updatedWinDraw);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+export const getWinDraw = async (req, res) => {
+  try {
+    const winDraws = await WinDraw.find();
+    res.status(200).json(winDraws);
   } catch (error) {
     res.status(500).json(error);
   }
